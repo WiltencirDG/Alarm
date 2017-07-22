@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string-array name="items">
+            <item>Aperture</item>
+            <item>Morning</item>
+            <item>Sandstorm</item>
+            <item>Symphony 40</item>
+            <item>Whistle</item>
+        </string-array>
+    </resources>

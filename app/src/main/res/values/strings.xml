@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Despertador</string>
+    <string name="title">Alarme</string>
+    <string name="deitei">Deitei!</string>
+    <string name="hora">--:--</string>
+    <string name="soneca">Soneca!</string>
+    <string name="desligar_alarme">Desligar Alarme!</string>
+    <string name="nivel_de_cansaco">Nivel de Cansaço</string>
+    <string name="pouco">Pouco</string>
+    <string name="moderado">Moderado</string>
+    <string name="muito">Muito</string>
+    <string name="pronto">Pronto!</string>
+    <string name="vibracao">Vibração</string>
+    <string name="vibrar">Vibrar</string>
+    <string name="tempo_de_snooze">Tempo da Soneca</string>
+    <string name="selecao_de_musica">Seleção de Música</string>
+    <string name="salvar">Salvar</string>
+</resources>
