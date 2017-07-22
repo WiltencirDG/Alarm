@@ -38,7 +38,7 @@ public class Wakeup extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wakeup_screen);
-
+        Calendar c = Calendar.getInstance();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON +
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
@@ -56,17 +56,17 @@ public class Wakeup extends AppCompatActivity {
         Snooze = (Button) findViewById(R.id.btnSnooze);
 
         final Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        String date = getIntent().getStringExtra("date");
+
         SnoozePress=false;
         AlarmeoffPress=false;
-        Alarmeatual.setText(String.valueOf(date));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String date = (sdf.format(c.getTime()));
+        Alarmeatual.setText(date);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         musica = sharedPref.getInt("musicaSpin",1);
         snooze = sharedPref.getInt("snoozeSpin",1);
         vibrar = sharedPref.getBoolean("vibra",true);
-
-        final Calendar c = Calendar.getInstance();
 
         if(vibrar) {
             long[] pattern = {0, 700, 1000};
@@ -124,29 +124,16 @@ public class Wakeup extends AppCompatActivity {
                     mPlayer.stop();
                     mPlayer.release();
                     mPlayer = null;
-
-                    c.setTime(new Date());
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    c.add(Calendar.MINUTE, i);
-//                    c.add(Calendar.MINUTE,1);
-
-                    String date = (sdf.format(c.getTime()));
-                    Intent S = new Intent(Wakeup.this, Alarm.class);
-                    S.putExtra("date", date);
-
-                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, S, 0);
-                    AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                    am.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-
-                    Toast.makeText(getApplicationContext(), "Alarme tocará em "+ i + " minutos.", Toast.LENGTH_SHORT).show();
+                    unregisterReceiver(vibratereceiver);
 
                     Intent it = new Intent(Wakeup.this, MainActivity.class);
-                    it.putExtra("date",date);
+                    it.putExtra("snoozed",SnoozePress);
+                    it.putExtra("snoozetime",i);
                     startActivity(it);
                     finish();
 
                 }else{
-                    Toast.makeText(getApplicationContext(), "Sem soneca!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Wakeup.this, "Sem soneca!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -159,6 +146,7 @@ public class Wakeup extends AppCompatActivity {
                 mPlayer.stop();
                 mPlayer.release();
                 mPlayer = null;
+                unregisterReceiver(vibratereceiver);
                 Intent it = new Intent(Wakeup.this, MainActivity.class);
                 startActivity(it);
                 finish();

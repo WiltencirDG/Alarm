@@ -12,10 +12,8 @@ public class Alarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String date = intent.getStringExtra("date");
         Intent i = new Intent(context, Wakeup.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra("date", date);
         context.startActivity(i);
     }
 }

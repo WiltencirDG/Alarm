@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView TextAlarme;
     private RadioGroup rgBtn;
     private Calendar cal = Calendar.getInstance();
-    private String date = "";
+    private String date;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,12 +56,25 @@ public class MainActivity extends AppCompatActivity {
         TextAlarme = (TextView) findViewById(R.id.alarme);
         BotaoAlarme = (Button) findViewById(R.id.BtnDeitei);
         BotaoDeletar = (ImageView) findViewById(R.id.excBtn);
-        if(getIntent().getStringExtra("date") == null){
-            TextAlarme.setText("--:--");
-        }else {
-            TextAlarme.setText(String.valueOf(getIntent().getStringExtra("date")));
-        }
+        Boolean snoozed = getIntent().getBooleanExtra("snoozed",false);
 
+        if(snoozed){
+            int i = getIntent().getIntExtra("snoozetime",1);
+
+            cal.setTime(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            cal.add(Calendar.MINUTE,i);
+            date = (sdf.format(cal.getTime()));
+
+            Intent O = new Intent(MainActivity.this, Alarm.class);
+            PendingIntent pend = PendingIntent.getBroadcast(getApplicationContext(),0,O,0);
+            AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarm.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),pend);
+
+            TextAlarme.setText(String.valueOf(date));
+            Toast.makeText(MainActivity.this, "Alarme tocará em "+ i + " minutos.", Toast.LENGTH_SHORT).show();
+
+        }
 
         BotaoAlarme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                 }else if (op == R.id.radioButtonMuito){
                     cal.setTime(new Date());
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    cal.add(Calendar.HOUR,9);
-                    cal.add(Calendar.MINUTE,7);
-//                    cal.add(Calendar.SECOND, 5);
+//                    cal.add(Calendar.HOUR,9);
+//                    cal.add(Calendar.MINUTE,7);
+                    cal.add(Calendar.SECOND, 5);
                     date = (sdf.format(cal.getTime()));
-                    Toast.makeText(MainActivity.this, "Alarme tocará em 9 horas e 7 minutos.", Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(MainActivity.this, "Alarme tocará em 5 segundos.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Alarme tocará em 9 horas e 7 minutos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Alarme tocará em 5 segundos.", Toast.LENGTH_SHORT).show();
                 }else{
                     cal.setTime(new Date());
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
@@ -97,15 +110,11 @@ public class MainActivity extends AppCompatActivity {
 
                 TextAlarme.setText(String.valueOf(date));
 
-                date = TextAlarme.getText().toString();
-
                 Intent i = new Intent(MainActivity.this, Alarm.class);
                 i.putExtra("date",date);
                 PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,i,0);
                 AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
                 am.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),pi);
-
-
             }
         });
 
