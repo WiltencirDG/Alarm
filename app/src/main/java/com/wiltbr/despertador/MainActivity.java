@@ -92,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                 }else if (op == R.id.radioButtonMuito){
                     cal.setTime(new Date());
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//                    cal.add(Calendar.HOUR,9);
-//                    cal.add(Calendar.MINUTE,7);
-                    cal.add(Calendar.SECOND, 5);
+                    cal.add(Calendar.HOUR,9);
+                    cal.add(Calendar.MINUTE,7);
+//                    cal.add(Calendar.SECOND, 5);
                     date = (sdf.format(cal.getTime()));
-//                    Toast.makeText(MainActivity.this, "Alarme tocará em 9 horas e 7 minutos.", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(MainActivity.this, "Alarme tocará em 5 segundos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Alarme tocará em 9 horas e 7 minutos.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Alarme tocará em 5 segundos.", Toast.LENGTH_SHORT).show();
                 }else{
                     cal.setTime(new Date());
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");

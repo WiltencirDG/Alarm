@@ -21,7 +21,8 @@
         <receiver android:name=".Alarm"></receiver>
 
         <activity android:name=".Wakeup"/>
-        <activity android:name=".Settings"/>
+        <activity android:name=".Settings"
+            android:parentActivityName=".MainActivity"/>
 
     </application>
 

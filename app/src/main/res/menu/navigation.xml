@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Configurações"
+    <item android:title="@string/configuracoes"
         android:icon="@drawable/ic_settings_black_24dp"
         android:id="@+id/settings"
         app:showAsAction="ifRoom"/>
