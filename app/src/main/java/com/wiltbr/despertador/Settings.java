@@ -1,7 +1,9 @@
 package com.wiltbr.despertador;
 
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,6 +27,8 @@ public class Settings extends AppCompatActivity {
     int musicaPos = 0;
     int snoozePos = 0;
     Boolean vibraPos = true;
+    MediaPlayer mPlayer;
+    Boolean initialDisplay = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +49,48 @@ public class Settings extends AppCompatActivity {
         timesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         snooze.setAdapter(timesAdapter);
 
+
         musica.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                musicaPos = musica.getSelectedItemPosition();
+                if(initialDisplay){
+                    initialDisplay = false;
+                }else{
+                    musicaPos = musica.getSelectedItemPosition();
+
+                    switch (musicaPos) {
+                        case 0:
+                            pararMusica();
+                            mPlayer = MediaPlayer.create(Settings.this,R.raw.aperture);
+                            mPlayer.start();
+                            break;
+                        case 1:
+                            pararMusica();
+                            mPlayer = MediaPlayer.create(Settings.this,R.raw.morning);
+                            mPlayer.start();
+                            break;
+                        case 2:
+                            pararMusica();
+                            mPlayer = MediaPlayer.create(Settings.this,R.raw.sandstorm);
+                            mPlayer.start();
+                            break;
+                        case 3:
+                            pararMusica();
+                            mPlayer = MediaPlayer.create(Settings.this,R.raw.symphony40);
+                            mPlayer.start();
+                            break;
+                        case 4:
+                            pararMusica();
+                            mPlayer = MediaPlayer.create(Settings.this,R.raw.whistle);
+                            mPlayer.start();
+                            break;
+                    }
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                pararMusica();
             }
         });
 
@@ -67,6 +104,8 @@ public class Settings extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
+
         });
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -102,5 +141,21 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void pararMusica() {
+        if(mPlayer!=null){
+            if(mPlayer.isPlaying()){
+                mPlayer.stop();
+                mPlayer.release();
+                mPlayer=null;
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pararMusica();
     }
 }
